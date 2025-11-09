@@ -9,6 +9,9 @@
 
 
 {% block body %}
-<h1>HELLO THERE</h1>
-<a href = "/displaysongurls?from=playlist">see song urls</a>
+
+{% for song in songurls %}
+<h3>{{song.song_url}}</h3>            
+{% endfor %}
+
 {% endblock %}
