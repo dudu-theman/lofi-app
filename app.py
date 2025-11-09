@@ -32,6 +32,7 @@ def disp_songs():
 def call_suno():
     if request.method == "GET":
         source = request.args.get("from")
+        print(f"SOURCE: {source}")
         if source == "home":
             response = make_song()
         return render_template("playlist.html")
