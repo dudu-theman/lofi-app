@@ -12,9 +12,7 @@ payload = {
     "customMode": True,
     "instrumental": True,
     "model": "V5",
-    "callbackUrl": "https://lofi-app-dc75.onrender.com/playlist"
-
-    
+    "callBackUrl": "https://lofi-app-dc75.onrender.com/playlist"
 }
 
 headers = {
