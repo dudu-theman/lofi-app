@@ -13,8 +13,8 @@ payload = {
     "instrumental": True,
     "model": "V5",
     "callbackUrl": "https://lofi-app-dc75.onrender.com/playlist"
-
 }
+
 headers = {
     "Authorization": f"Bearer {api_key}",
     "Content-Type": "application/json"
