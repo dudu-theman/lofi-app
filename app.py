@@ -31,10 +31,7 @@ def disp_songs():
 @app.route ("/playlist", methods=["GET", "POST"])
 def call_suno():
     if request.method == "GET":
-        source = request.args.get("from")
-        print(f"SOURCE: {source}")
-        if source == "home":
-            response = make_song()
+        response = make_song()
         return render_template("playlist.html")
     
     elif request.method == "POST":
