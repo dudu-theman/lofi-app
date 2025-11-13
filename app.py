@@ -189,7 +189,7 @@ def handle_callback():
             )
 
             # 3️⃣ Construct the S3 URL
-            s3_url = f"https://{AWS_BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{file_name}"
+            s3_url = f"https://{AWS_BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{file_name}/{i}"
 
             # 4️⃣ Save that URL in the database
             new_song = AISong(title=title, audio_url=s3_url, task_id=task_id)
