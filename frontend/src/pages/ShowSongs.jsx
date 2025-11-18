@@ -5,10 +5,14 @@ function ShowSongs () {
     const [songs, setSongs] = useState([]);
 
     useEffect(() => {
-        fetch("https://lofi-app-dc75.onrender.com/api/songs")
-        .then(res => res.json())
-        .then(data => setSongs(data));
-    }, []);
+        async function loadSongs() {
+            const res = await fetch("https://lofi-app-dc75.onrender.com/api/songs")
+            const data = await res.json();
+            setSongs(data);
+        }
+
+        loadSongs();
+    },[])
 
     return (
         <>

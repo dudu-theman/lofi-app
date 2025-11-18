@@ -53,7 +53,8 @@ def root():
 
 @app.route("/generate", methods=["POST"])
 def generate_song():
-    make_song()
+    query = request.args.get("q")
+    make_song(query)
     return jsonify({"message": "Generation started"}), 200
 
 
