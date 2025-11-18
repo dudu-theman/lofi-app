@@ -42,6 +42,7 @@ class AISong(db.Model):
 
 
 with app.app_context():
+    db.drop_all()
     db.create_all()
 
 
@@ -75,7 +76,8 @@ def callback():
 
             # download MP3 and upload to S3
             response = requests.get(audio_url)
-            file_name = secure_filename(f"{title}.mp3")
+            unique_id = str(uuid.uuid4())
+            file_name = secure_filename(f"{unique_id}_{title}.mp3")
             s3.upload_fileobj(
                 BytesIO(response.content),
                 AWS_BUCKET_NAME,
