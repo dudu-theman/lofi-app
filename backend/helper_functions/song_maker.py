@@ -20,10 +20,10 @@ headers = {
     "Content-Type": "application/json"
 }
 
-def make_song_params():
-    return {"url": url, 
-            "payload": payload, 
-            "headers": headers}
+#def make_song_params():
+#    return {"url": url, 
+#           "payload": payload, 
+#            "headers": headers}
 
 def make_song(query):
     payload = {
