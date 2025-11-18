@@ -15,6 +15,7 @@ function ShowSongs () {
             {songs.map(song => (
                 <div key={song.id}>
                     <h3>{song.title}</h3>
+                    <h3>{song.audio_url}</h3>
                     <audio src={song.audio_url} controls />
                 </div>
             ))
