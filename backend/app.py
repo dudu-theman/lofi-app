@@ -39,6 +39,7 @@ class AISong(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150))
     audio_url = db.Column(db.String(300))
+    song_id = db.Column(db.String(300))
 
 
 with app.app_context():
@@ -58,10 +59,6 @@ def generate_song():
     return jsonify({"message": "Generation started"}), 200
 
 
-
-# suno can end up callback multiple times for the same song
-# this can cause multiple s3 files being created for 1 song file
-# currently change so that i only get 1 song now, but need to be aware in the future
 @app.route("/callback", methods=["POST"])
 def callback():
     data = request.json or {}
@@ -71,13 +68,18 @@ def callback():
 
     if data.get("code") == 200:
         song = songs_data[0]
-     #   for i, song in enumerate(songs_data):
 
         title = song.get("title","Song is missing title")
         audio_url = song.get("audio_url")
-
         if not audio_url:
             print("Skipping missing audio_url for song:", title)
+
+        song_id = song.get("id")
+        existing = AISong.query.filter_by(song_id=song_id).first()
+        if existing:
+            print("Callback already processed for this song:", song_id)
+            return "Already processed", 200
+
 
         # download MP3 and upload to S3
         response = requests.get(audio_url)
@@ -94,7 +96,7 @@ def callback():
         s3_url = (
             f"https://{AWS_BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{file_name}"
         )
-        new_song = AISong(title=title, audio_url=s3_url)
+        new_song = AISong(title=title, audio_url=s3_url, song_id=song_id)
         db.session.add(new_song)
 
         db.session.commit()
