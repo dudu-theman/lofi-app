@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
 import ShowSongs from "./pages/ShowSongs.jsx";
 import SearchBar from "./components/SearchBar.jsx"
@@ -23,7 +23,9 @@ function App() {
     <>
       <SearchBar onSearch={handleSearch}/>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<Navigate to="/auth" />} />
+        <Route path="/auth" element={<AuthPage/>} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/showsongs" element={<ShowSongs/>}/>
       </Routes>
     </>
