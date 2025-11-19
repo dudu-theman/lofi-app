@@ -37,7 +37,7 @@ def make_song(query):
         "title": f"{title}", 
         "customMode": True,
         "instrumental": True,
-        "model": "V5",
+        "model": "V4",
         "callBackUrl": "https://lofi-app-dc75.onrender.com/callback"
     }
     response = requests.post(url, json=payload, headers=headers)

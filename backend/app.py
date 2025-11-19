@@ -58,6 +58,10 @@ def generate_song():
     return jsonify({"message": "Generation started"}), 200
 
 
+
+# suno can end up callback multiple times for the same song
+# this can cause multiple s3 files being created for 1 song file
+# currently change so that i only get 1 song now, but need to be aware in the future
 @app.route("/callback", methods=["POST"])
 def callback():
     data = request.json or {}
