@@ -42,7 +42,7 @@ class AISong(db.Model):
 
 
 with app.app_context():
-    #db.drop_all()
+    db.drop_all()
     db.create_all()
 
 
@@ -66,32 +66,32 @@ def callback():
     songs_data = data.get("data", {}).get("data", [])
 
     if data.get("code") == 200:
-        for i, song in enumerate(songs_data):
+        song = songs_data[0]
+     #   for i, song in enumerate(songs_data):
 
-            title = song.get("title", f"Song_{i}")
-            audio_url = song.get("audio_url")
+        title = song.get("title", f"Song_{i}")
+        audio_url = song.get("audio_url")
 
-            if not audio_url:
-                print("Skipping missing audio_url for song:", title)
-                continue
+        if not audio_url:
+            print("Skipping missing audio_url for song:", title)
 
-            # download MP3 and upload to S3
-            response = requests.get(audio_url)
-            unique_id = str(uuid.uuid4())
-            file_name = secure_filename(f"{unique_id}_{title}.mp3")
-            s3.upload_fileobj(
-                BytesIO(response.content),
-                AWS_BUCKET_NAME,
-                f"{i}{file_name}",
-                ExtraArgs={"ContentType": "audio/mpeg"}
-            )
+        # download MP3 and upload to S3
+        response = requests.get(audio_url)
+        unique_id = str(uuid.uuid4())
+        file_name = secure_filename(f"{unique_id}_{title}.mp3")
+        s3.upload_fileobj(
+            BytesIO(response.content),
+            AWS_BUCKET_NAME,
+            f"{i}{file_name}",
+            ExtraArgs={"ContentType": "audio/mpeg"}
+        )
 
-            # construct S3 URL and save in DB
-            s3_url = (
-                f"https://{AWS_BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{i}{file_name}"
-            )
-            new_song = AISong(title=title, audio_url=s3_url)
-            db.session.add(new_song)
+        # construct S3 URL and save in DB
+        s3_url = (
+            f"https://{AWS_BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{i}{file_name}"
+        )
+        new_song = AISong(title=title, audio_url=s3_url)
+        db.session.add(new_song)
 
         db.session.commit()
 
